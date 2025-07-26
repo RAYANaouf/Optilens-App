@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.optilens.MainViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 
@@ -13,6 +15,9 @@ private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(n
 val koinModule = module {
 
 
+    viewModel {
+        MainViewModel()
+    }
 
 
 }

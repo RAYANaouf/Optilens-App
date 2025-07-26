@@ -69,6 +69,7 @@ import com.example.optilens.presentation.theme.p_color2
 import com.example.optilens.presentation.view.material.topBar.JethingBottomBar
 import com.example.optilens.presentation.view.material.topBar.JethingTopBar
 import com.example.optilens.unit.responsiveScreenTools.rememberWindowInfo
+import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
@@ -95,6 +96,8 @@ fun mainScreen(
     val navController = rememberNavController()
 
     val windowInfo = rememberWindowInfo()
+
+    val viewModel = koinViewModel<MainViewModel>()
 
 
     var drawerState by remember{
@@ -177,7 +180,7 @@ fun mainScreen(
                     ) {
                         AnimatedVisibility(visible = true) {
                             JethingTopBar(
-                                "Dashboard"
+                                title = viewModel.topBarTxt
                             )
                         }
                     }
@@ -211,7 +214,7 @@ fun mainScreen(
 
                     },
                     currentPage = {
-
+                        viewModel.onEvent(MainEvent.ScreenChangeEvent(it))
                     }
                 )
 

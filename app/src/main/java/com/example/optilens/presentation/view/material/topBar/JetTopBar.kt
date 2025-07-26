@@ -49,7 +49,9 @@ fun JethingTopBar(
                             color = p_color1_dark
                         )
                     ){
-                        append("D")
+                        if (title.length > 0){
+                            append(title[0])
+                        }
                     }
                     withStyle(
                         style = SpanStyle(
@@ -58,7 +60,9 @@ fun JethingTopBar(
                             color = p_color1_dark
                         )
                     ){
-                        append("ashboard")
+                        if (title.length > 1){
+                            append(title.substring(1))
+                        }
                     }
                 },
                 style = TextStyle(

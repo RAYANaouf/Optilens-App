@@ -1,4 +1,145 @@
 package com.example.optilens
 
-class MainViewModel {
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import com.example.optilens.presentation.navgraph.AppScreen
+import com.example.optilens.presentation.navgraph.accountScreen
+import com.example.optilens.presentation.navgraph.dashboardScreen
+import com.example.optilens.presentation.navgraph.invoiceScreen
+import com.example.optilens.presentation.navgraph.logInScreen
+import com.example.optilens.presentation.navgraph.paymentScreen
+
+class MainViewModel(
+
+) : ViewModel() {
+
+    var startDestination by mutableStateOf<AppScreen>(logInScreen)
+        private set
+
+
+    //topbar
+    var show_topbar    by mutableStateOf(false)
+        private set
+    var topbar_shadow  by mutableStateOf(0.dp)
+        private set
+    var topBarImg by mutableStateOf<Int?>(null)
+        private set
+    var topBarTxt by mutableStateOf<String>("")
+        private set
+
+
+    var current_screen : AppScreen by mutableStateOf(dashboardScreen)
+        private set
+    var current_scene  : String    by mutableStateOf("")
+        private set
+
+
+    //bottom bar
+    var show_bottombar by mutableStateOf(false)
+        private set
+    var bottombar_shadow  by mutableStateOf(0.dp)
+        private set
+
+    //navigation drawer
+
+    var show_navigationDrawer    by mutableStateOf(false)
+        private set
+
+
+
+    private fun setTopBarInfo( txt : String?) {
+        if (txt != null)
+            topBarTxt = txt
+
+    }
+
+
+    private fun setCurrentScreen( appScreen : AppScreen) {
+        current_screen = appScreen
+        when(current_screen){
+            dashboardScreen->{
+                show_topbar      =  true
+                topbar_shadow    =  2.dp
+                setTopBarInfo( txt = "Dashboard" )
+
+                //bottom bar
+                show_bottombar   =  true
+                bottombar_shadow =  0.dp
+
+                //navigation drawer
+                show_navigationDrawer = true
+
+            }
+            invoiceScreen->{
+                show_topbar      =  true
+                topbar_shadow    =  2.dp
+                setTopBarInfo( txt = "Invoice" )
+
+                //bottom bar
+                show_bottombar   =  true
+                bottombar_shadow =  0.dp
+
+                //navigation drawer
+                show_navigationDrawer = true
+
+            }
+            paymentScreen->{
+                show_topbar      =  true
+                topbar_shadow    =  2.dp
+                setTopBarInfo( txt = "Payment" )
+
+                //bottom bar
+                show_bottombar   =  true
+                bottombar_shadow =  0.dp
+
+                //navigation drawer
+                show_navigationDrawer = true
+
+            }
+            accountScreen->{
+                show_topbar      =  true
+                topbar_shadow    =  2.dp
+                setTopBarInfo( txt = "Profile" )
+
+                //bottom bar
+                show_bottombar   =  true
+                bottombar_shadow =  0.dp
+
+                //navigation drawer
+                show_navigationDrawer = true
+
+            }
+
+
+            else ->{
+                //top bar
+                show_topbar      =  true
+                topbar_shadow    =  0.dp
+                //bottom bar
+                show_bottombar   =  false
+                bottombar_shadow =  0.dp
+
+                //navigation drawer
+                show_navigationDrawer = false
+            }
+
+        }
+    }
+
+
+    fun onEvent(event : MainEvent, onSuccees : () -> Unit = {}, onFailure : () -> Unit = {}){
+        when(event){
+            is MainEvent.ScreenChangeEvent -> {
+                setCurrentScreen(event.screen)
+            }
+            else ->{
+
+            }
+        }
+
+    }
+
 }

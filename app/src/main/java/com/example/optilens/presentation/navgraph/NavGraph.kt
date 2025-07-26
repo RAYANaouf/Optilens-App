@@ -56,10 +56,16 @@ fun  NavGraph(
             /*********************************** dashboard  *********************************/
             composable<dashboardScreen> {
 
+
                 set_system_bars_color(
                     statusBarColor     =  customWhite0,
                     navigationBarColor =  customWhite0
                 )
+
+                SideEffect {
+                    currentPage(dashboardScreen)
+                }
+
 
                 DashboardScreen(
                     modifier = Modifier
@@ -69,13 +75,29 @@ fun  NavGraph(
             /*********************************** invoice  *********************************/
             composable<invoiceScreen> {
 
+
+                SideEffect {
+                    currentPage(invoiceScreen)
+                }
+
             }
             /*********************************** payment  *********************************/
             composable<paymentScreen> {
 
+
+                SideEffect {
+                    currentPage(paymentScreen)
+                }
+
             }
             /*********************************** account  *********************************/
             composable<accountScreen> {
+
+
+
+                SideEffect {
+                    currentPage(accountScreen)
+                }
 
             }
 
