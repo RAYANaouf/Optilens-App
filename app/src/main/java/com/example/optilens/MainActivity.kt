@@ -192,6 +192,7 @@ fun mainScreen(
                     ) {
                         AnimatedVisibility(visible = true) {
                             JethingBottomBar(
+                                selectedScreen = viewModel.current_screen,
                                 onClick = {
                                     navController.navigate(it)
                                 }
