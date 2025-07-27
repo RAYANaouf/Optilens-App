@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -34,8 +35,9 @@ import com.example.optilens.presentation.theme.p_color1_dark
 
 @Composable
 fun JethingBottomBar(
-    modifier : Modifier = Modifier,
-    onClick  : (AppScreen)->Unit = {  }
+    modifier       : Modifier = Modifier,
+    selectedScreen : AppScreen = dashboardScreen,
+    onClick        : (AppScreen)->Unit = {  }
 ) {
 
     Surface(
@@ -58,7 +60,7 @@ fun JethingBottomBar(
                         drawLine(
                             start = Offset.Zero,
                             end = Offset(x = size.width, y = 0f),
-                            color = p_color1_dark,
+                            color = if(selectedScreen == dashboardScreen) p_color1_dark else Color.Transparent,
                             strokeWidth = 4.dp.toPx()
                         )
                     }
@@ -79,6 +81,14 @@ fun JethingBottomBar(
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(1f)
+                    .drawBehind {
+                        drawLine(
+                            start = Offset.Zero,
+                            end = Offset(x = size.width, y = 0f),
+                            color = if(selectedScreen == invoiceScreen) p_color1_dark else Color.Transparent,
+                            strokeWidth = 4.dp.toPx()
+                        )
+                    }
                     .clickable {
                         onClick(invoiceScreen)
                     }
@@ -96,6 +106,14 @@ fun JethingBottomBar(
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(1f)
+                    .drawBehind {
+                        drawLine(
+                            start = Offset.Zero,
+                            end = Offset(x = size.width, y = 0f),
+                            color = if(selectedScreen == paymentScreen) p_color1_dark else Color.Transparent,
+                            strokeWidth = 4.dp.toPx()
+                        )
+                    }
                     .clickable {
                         onClick(paymentScreen)
                     }
@@ -113,6 +131,14 @@ fun JethingBottomBar(
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(1f)
+                    .drawBehind {
+                        drawLine(
+                            start = Offset.Zero,
+                            end = Offset(x = size.width, y = 0f),
+                            color = if(selectedScreen == accountScreen) p_color1_dark else Color.Transparent,
+                            strokeWidth = 4.dp.toPx()
+                        )
+                    }
                     .clickable {
                         onClick(accountScreen)
                     }
