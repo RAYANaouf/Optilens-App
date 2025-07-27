@@ -27,6 +27,7 @@ import com.example.optilens.presentation.theme.p_color2
 import com.example.optilens.presentation.theme.p_color4
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
 import com.example.optilens.presentation.view.screens.invoice.InvoiceScreen
+import com.example.optilens.presentation.view.screens.payment.PaymentScreen
 import com.example.optilens.unit.responsiveScreenTools.WindowInfo
 
 
@@ -94,6 +95,12 @@ fun  NavGraph(
                 SideEffect {
                     currentPage(paymentScreen)
                 }
+
+
+                PaymentScreen(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                )
 
             }
             /*********************************** account  *********************************/
