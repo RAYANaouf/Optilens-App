@@ -21,3 +21,6 @@ object paymentScreen : AppScreen()
 
 @Serializable
 object accountScreen : AppScreen()
+
+@Serializable
+object invoiceDetailsScreen : AppScreen()

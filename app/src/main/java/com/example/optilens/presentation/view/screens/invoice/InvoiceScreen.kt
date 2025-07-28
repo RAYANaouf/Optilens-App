@@ -34,6 +34,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.optilens.presentation.navgraph.AppScreen
+import com.example.optilens.presentation.navgraph.invoiceDetailsScreen
 import com.example.optilens.presentation.theme.p_color1
 import com.example.optilens.presentation.theme.p_color1_dark
 import com.example.optilens.presentation.theme.p_color5
@@ -42,6 +44,7 @@ import com.example.optilens.presentation.view.material.AlphaTextFields.JethingsT
 
 @Composable
 fun InvoiceScreen(
+    onNavigate : (AppScreen)->Unit = {},
     modifier: Modifier = Modifier
 ) {
 
@@ -154,6 +157,9 @@ fun InvoiceScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clickable {
+                        onNavigate(invoiceDetailsScreen)
+                    }
                     .padding(horizontal = 16.dp)
             ) {
                 Column(

@@ -25,8 +25,10 @@ import com.example.optilens.presentation.theme.background_color_0
 import com.example.optilens.presentation.theme.customWhite0
 import com.example.optilens.presentation.theme.p_color2
 import com.example.optilens.presentation.theme.p_color4
+import com.example.optilens.presentation.view.screens.account.ProfileScreen
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
 import com.example.optilens.presentation.view.screens.invoice.InvoiceScreen
+import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDetailsScreen
 import com.example.optilens.presentation.view.screens.payment.PaymentScreen
 import com.example.optilens.unit.responsiveScreenTools.WindowInfo
 
@@ -83,6 +85,9 @@ fun  NavGraph(
                 }
 
                 InvoiceScreen(
+                    onNavigate = {
+                        navController.navigate(it)
+                    },
                     modifier = Modifier
                         .padding(paddingValues)
                 )
@@ -111,6 +116,27 @@ fun  NavGraph(
                 SideEffect {
                     currentPage(accountScreen)
                 }
+
+                ProfileScreen(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                )
+
+            }
+
+
+            /********************************  invoice details  ******************************/
+
+            composable<invoiceDetailsScreen> {
+
+                SideEffect {
+                    currentPage(invoiceDetailsScreen)
+                }
+
+                InvoiceDetailsScreen(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                )
 
             }
 
