@@ -29,6 +29,7 @@ import com.example.optilens.presentation.view.screens.account.ProfileScreen
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
 import com.example.optilens.presentation.view.screens.invoice.InvoiceScreen
 import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDetailsScreen
+import com.example.optilens.presentation.view.screens.logIn.LoginScreen
 import com.example.optilens.presentation.view.screens.payment.PaymentScreen
 import com.example.optilens.unit.responsiveScreenTools.WindowInfo
 
@@ -134,6 +135,22 @@ fun  NavGraph(
                 }
 
                 InvoiceDetailsScreen(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                )
+
+            }
+
+
+            /********************************  log in    ******************************/
+
+            composable<logInScreen> {
+
+                SideEffect {
+                    currentPage(logInScreen)
+                }
+
+                LoginScreen(
                     modifier = Modifier
                         .padding(paddingValues)
                 )

@@ -35,12 +35,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
-// You'll need to define these or import them:
-// data class Invoice(...)
-// data class InvoiceItem(...)
-// class InvoiceDetailsViewModel(...) - This would be how the screen gets data
-// sealed interface InvoiceDetailsUiState(...)
-// Example Data Classes (place in your domain/data model packages)
 data class Invoice(
     val id: String,
     val invoiceNumber: String,
@@ -57,8 +51,7 @@ data class Invoice(
 data class InvoiceItem(
     val description: String,
     val quantity: Int,
-    val unitPrice: Double,
-    val total: Double
+    val unitPrice: Double
 )
 
 // Example UiState (place near your ViewModel or screen)
@@ -98,13 +91,25 @@ fun InvoiceDetailsScreen(
                     Invoice(
                         id = "prev123",
                         invoiceNumber = "PREV-001",
-                        customerName = "Preview Customer Inc.",
+                        customerName = "Akram Duira",
                         issueDate = "2023-10-01",
                         dueDate = "2023-10-15",
                         items = listOf(
-                            InvoiceItem("Development Services", 10, 100.0, 1000.0),
-                            InvoiceItem("Consulting", 5, 150.0, 750.0)
-                        ),
+                            InvoiceItem("1.56 HMC +0.00 +0.25", 10, 120.0),
+                            InvoiceItem("1.56 HMC +0.00 +0.50", 5, 150.0),
+                            InvoiceItem("1.56 HMC +0.00 +0.75", 17, 120.0),
+                            InvoiceItem("1.56 HC +2.00 +0.50", 3, 150.0),
+                            InvoiceItem("1.56 HMC +1.25 +1.75", 2, 120.0),
+                            InvoiceItem("1.56 HMC +3.00 +0.50", 5, 150.0),
+                            InvoiceItem("1.56 BB Blue +0.00 +0.25", 10, 120.0),
+                            InvoiceItem("1.56 BB Blue +0.00 +0.50", 5, 150.0),
+                            InvoiceItem("1.56 BB Blue +0.00 +0.75", 17, 120.0),
+                            InvoiceItem("1.56 BB Blue +2.00 +0.50", 3, 150.0),
+                            InvoiceItem("1.56 BB Blue +1.25 +1.75", 2, 120.0),
+                            InvoiceItem("1.56 HMC +3.00 +0.50", 5, 150.0),
+                            InvoiceItem("1.56 HC +0.00 +0.25", 8, 120.0),
+                            InvoiceItem("1.56 HC +0.00 +0.50", 7, 150.0),
+                         ),
                         subtotal = 1750.0,
                         taxAmount = 175.0,
                         totalAmount = 1925.0,
@@ -208,13 +213,13 @@ fun InvoiceListItem(item: InvoiceItem) {
         Column(modifier = Modifier.weight(1f)) {
             Text(item.description, style = MaterialTheme.typography.bodyLarge)
             Text(
-                "Qty: ${item.quantity} @ ${"%.2f".format(item.unitPrice)}",
+                "Qty: ${item.quantity} Unit Price : ${"%.2f".format(item.unitPrice)} DA",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         Text(
-            text = "$${"%.2f".format(item.total)}",
+            text = "${"%.2f".format((item.quantity * item.unitPrice))} DA",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Medium
         )
@@ -250,7 +255,7 @@ fun TotalRow(label: String, amount: Double, isTotal: Boolean = false) {
             fontWeight = if (isTotal) FontWeight.Bold else FontWeight.Normal
         )
         Text(
-            text = "$${"%.2f".format(amount)}",
+            text = "${"%.2f".format(amount)} DA",
             style = if (isTotal) MaterialTheme.typography.titleMedium else MaterialTheme.typography.bodyMedium,
             fontWeight = if (isTotal) FontWeight.Bold else FontWeight.Normal
         )
@@ -291,8 +296,8 @@ private fun InvoiceDetails_Success_Preview() {
         issueDate = "2023-10-01",
         dueDate = "2023-10-15",
         items = listOf(
-            InvoiceItem("Development Services", 10, 100.0, 1000.0),
-            InvoiceItem("Consulting", 5, 150.0, 750.0)
+            InvoiceItem("Development Services", 10, 100.0),
+            InvoiceItem("Consulting", 5, 150.0)
         ),
         subtotal = 1750.0,
         taxAmount = 175.0,
