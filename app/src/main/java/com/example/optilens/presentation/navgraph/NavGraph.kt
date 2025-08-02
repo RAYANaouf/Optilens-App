@@ -186,7 +186,7 @@ fun  NavGraph(
                 var uiState by remember {
                     mutableStateOf(
                         ClientLoginUiState(
-                            clientCode = "VALIDCODE",
+                            clientCode = "",
                             isLoading = false,
                             errorMessage = null
                         )

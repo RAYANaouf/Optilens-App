@@ -147,6 +147,8 @@ fun LoginScreen(
                         onValueChange = {
                             onEvent(LogInEvent.OnClientCodeChange(it))
                         },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = TextFieldDefaults.colors().copy(focusedLabelColor = p_color1 , focusedIndicatorColor = p_color1 , focusedContainerColor = customWhite0 , unfocusedContainerColor = customWhite0),
                         label = { Text("Client Code") },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
