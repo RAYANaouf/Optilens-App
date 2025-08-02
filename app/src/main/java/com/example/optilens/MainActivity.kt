@@ -178,7 +178,7 @@ fun mainScreen(
                         modifier = Modifier
                             .windowInsetsPadding(WindowInsets.statusBars)
                     ) {
-                        AnimatedVisibility(visible = true) {
+                        AnimatedVisibility(visible = viewModel.show_topbar) {
                             JethingTopBar(
                                 title = viewModel.topBarTxt
                             )
@@ -190,7 +190,7 @@ fun mainScreen(
                         modifier = Modifier
                             .windowInsetsPadding(WindowInsets.navigationBars)
                     ) {
-                        AnimatedVisibility(visible = true) {
+                        AnimatedVisibility(visible = viewModel.show_bottombar) {
                             JethingBottomBar(
                                 selectedScreen = viewModel.current_screen,
                                 onClick = {
@@ -208,7 +208,7 @@ fun mainScreen(
 
                 NavGraph(
                     navController = navController,
-                    startDestination = dashboardScreen,
+                    startDestination = viewModel.startDestination,
                     paddingValues = padding,
                     windowInfo = windowInfo,
                     currentScene = {

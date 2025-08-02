@@ -1,19 +1,27 @@
 package com.example.optilens
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.optilens.data.db.entities.Account
+import com.example.optilens.domain.manager.LocalUserManager
 import com.example.optilens.presentation.navgraph.AppScreen
 import com.example.optilens.presentation.navgraph.accountScreen
 import com.example.optilens.presentation.navgraph.dashboardScreen
 import com.example.optilens.presentation.navgraph.invoiceScreen
 import com.example.optilens.presentation.navgraph.logInScreen
 import com.example.optilens.presentation.navgraph.paymentScreen
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class MainViewModel(
-
+    private val localUserManager : LocalUserManager,
 ) : ViewModel() {
 
     var startDestination by mutableStateOf<AppScreen>(logInScreen)
@@ -50,6 +58,39 @@ class MainViewModel(
 
 
 
+
+    //logic vars
+    var account : Account? by mutableStateOf(null)
+        private set
+
+
+    init {
+
+        viewModelScope.launch {
+            localUserManager.readAccount().onEach { acc ->
+                if (acc != null) {
+                    val _account = localUserManager.readAccount().first()
+                    if (_account != null) {
+                        Log.d("success to log in", "success to read account : ${acc}")
+                        account = _account
+                        startDestination = dashboardScreen
+                    } else {
+                        startDestination = logInScreen
+                    }
+
+                } else {
+                    startDestination = logInScreen
+                }
+
+            }.launchIn(viewModelScope)
+
+        }
+    }
+
+
+
+
+
     private fun setTopBarInfo( txt : String?) {
         if (txt != null)
             topBarTxt = txt
@@ -60,6 +101,18 @@ class MainViewModel(
     private fun setCurrentScreen( appScreen : AppScreen) {
         current_screen = appScreen
         when(current_screen){
+            logInScreen ->{
+                show_topbar      =  false
+                topbar_shadow    =  2.dp
+                setTopBarInfo( txt = "" )
+
+                //bottom bar
+                show_bottombar   =  false
+                bottombar_shadow =  0.dp
+
+                //navigation drawer
+                show_navigationDrawer = false
+            }
             dashboardScreen->{
                 show_topbar      =  true
                 topbar_shadow    =  2.dp

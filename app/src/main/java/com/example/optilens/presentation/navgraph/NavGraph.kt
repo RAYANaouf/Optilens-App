@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -23,13 +27,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.optilens.presentation.theme.background_color_0
 import com.example.optilens.presentation.theme.customWhite0
+import com.example.optilens.presentation.theme.p_color1_dark
 import com.example.optilens.presentation.theme.p_color2
 import com.example.optilens.presentation.theme.p_color4
 import com.example.optilens.presentation.view.screens.account.ProfileScreen
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
 import com.example.optilens.presentation.view.screens.invoice.InvoiceScreen
 import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDetailsScreen
+import com.example.optilens.presentation.view.screens.logIn.ClientLoginUiState
 import com.example.optilens.presentation.view.screens.logIn.LoginScreen
+import com.example.optilens.presentation.view.screens.logIn.event.LogInEvent
 import com.example.optilens.presentation.view.screens.payment.PaymentScreen
 import com.example.optilens.unit.responsiveScreenTools.WindowInfo
 
@@ -81,6 +88,11 @@ fun  NavGraph(
             composable<invoiceScreen> {
 
 
+                set_system_bars_color(
+                    statusBarColor     =  customWhite0,
+                    navigationBarColor =  customWhite0
+                )
+
                 SideEffect {
                     currentPage(invoiceScreen)
                 }
@@ -98,6 +110,11 @@ fun  NavGraph(
             composable<paymentScreen> {
 
 
+                set_system_bars_color(
+                    statusBarColor     =  customWhite0,
+                    navigationBarColor =  customWhite0
+                )
+
                 SideEffect {
                     currentPage(paymentScreen)
                 }
@@ -113,6 +130,10 @@ fun  NavGraph(
             composable<accountScreen> {
 
 
+                set_system_bars_color(
+                    statusBarColor     =  customWhite0,
+                    navigationBarColor =  customWhite0
+                )
 
                 SideEffect {
                     currentPage(accountScreen)
@@ -130,6 +151,12 @@ fun  NavGraph(
 
             composable<invoiceDetailsScreen> {
 
+
+                set_system_bars_color(
+                    statusBarColor     =  customWhite0,
+                    navigationBarColor =  customWhite0
+                )
+
                 SideEffect {
                     currentPage(invoiceDetailsScreen)
                 }
@@ -146,11 +173,39 @@ fun  NavGraph(
 
             composable<logInScreen> {
 
+
+                set_system_bars_color(
+                    statusBarColor     =  customWhite0,
+                    navigationBarColor =  p_color1_dark
+                )
+
                 SideEffect {
                     currentPage(logInScreen)
                 }
 
+                var uiState by remember {
+                    mutableStateOf(
+                        ClientLoginUiState(
+                            clientCode = "VALIDCODE",
+                            isLoading = false,
+                            errorMessage = null
+                        )
+                    )
+                }
+
                 LoginScreen(
+                    uiState  = uiState,
+                    onEvent = {
+                        when(it){
+                            is LogInEvent.OnClientCodeChange -> {
+                                uiState = uiState.copy(clientCode = it.code)
+                            }
+                            else ->{
+
+                            }
+
+                        }
+                    },
                     modifier = Modifier
                         .padding(paddingValues)
                 )

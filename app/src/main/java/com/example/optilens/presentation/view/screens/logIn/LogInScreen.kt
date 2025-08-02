@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -33,8 +35,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.optilens.R // Assuming you have a logo in drawable
 import com.example.optilens.presentation.theme.OptilensTheme // Your app's theme
+import com.example.optilens.presentation.theme.background_color_0
+import com.example.optilens.presentation.theme.customWhite0
+import com.example.optilens.presentation.theme.p_color1
+import com.example.optilens.presentation.theme.p_color1_dark
+import com.example.optilens.presentation.theme.p_color2
+import com.example.optilens.presentation.view.screens.logIn.event.LogInEvent
 
 // Dummy ViewModel State and Events for illustration
 data class ClientLoginUiState(
@@ -43,17 +52,13 @@ data class ClientLoginUiState(
     val errorMessage: String? = null
 )
 
-sealed interface ClientLoginEvent {
-    data class OnClientCodeChange(val code: String) : ClientLoginEvent
-    object OnLoginClick : ClientLoginEvent
-    object ClearError : ClientLoginEvent
-}
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
     uiState: ClientLoginUiState = ClientLoginUiState(),
-    onEvent: (ClientLoginEvent) -> Unit = {},
+    onEvent: (LogInEvent) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -65,9 +70,11 @@ fun LoginScreen(
             .background(
                 brush = Brush.verticalGradient( // Subtle gradient background
                     colors = listOf(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                        MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
-                        MaterialTheme.colorScheme.surface
+                        background_color_0,
+                        background_color_0,
+                        p_color1,
+                        p_color1,
+                        p_color1_dark
                     ),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
@@ -84,14 +91,18 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Spacer(Modifier.height(45.dp))
+
+
             // 1. Logo
             Image(
                 painter = painterResource(id = R.drawable.logo), // Replace with your logo
                 contentDescription = "Optilens Logo",
                 modifier = Modifier
-                    .size(120.dp) // Adjust size as needed
-                    .padding(bottom = 48.dp),
-                contentScale = ContentScale.Fit
+                    .fillMaxWidth(0.80f)// Adjust size as needed
+                    .padding(bottom = 48.dp)
+                    .background(Color.Red),
+                contentScale = ContentScale.FillWidth
             )
 
             // 2. Welcome Text
@@ -110,10 +121,19 @@ fun LoginScreen(
             )
 
             // Card for input and button for a slightly elevated look
-            Card(
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh) // Slightly different from main surface
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .shadow(
+                        elevation = 8.dp, // Adjust the size of the shadow
+                        shape = RoundedCornerShape(16.dp), // Match the card's shape
+                        clip = false, // Allow shadow to extend beyond the bounds if needed (usually false for cards)
+                        ambientColor = p_color2, // Color in shaded areas
+                        spotColor = p_color2    // Color from the light source
+                    )
+                    .background(customWhite0)
+
+                // You can add other modifiers for the card here as well, like .padding or .width
             ) {
                 Column(
                     modifier = Modifier
@@ -124,7 +144,9 @@ fun LoginScreen(
                     // 3. Client Code Input Field
                     OutlinedTextField(
                         value = uiState.clientCode,
-                        onValueChange = { onEvent(ClientLoginEvent.OnClientCodeChange(it)) },
+                        onValueChange = {
+                            onEvent(LogInEvent.OnClientCodeChange(it))
+                        },
                         label = { Text("Client Code") },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
@@ -136,7 +158,7 @@ fun LoginScreen(
                                 keyboardController?.hide()
                                 if (uiState.clientCode.isNotBlank()) {
                                     hasAttemptedLogin = true
-                                    onEvent(ClientLoginEvent.OnLoginClick)
+                                    onEvent(LogInEvent.OnLoginClick)
                                 }
                             }
                         ),
@@ -167,8 +189,9 @@ fun LoginScreen(
                         onClick = {
                             keyboardController?.hide()
                             hasAttemptedLogin = true
-                            onEvent(ClientLoginEvent.OnLoginClick)
+                            onEvent(LogInEvent.OnLoginClick)
                         },
+                        colors = ButtonDefaults.buttonColors().copy(contentColor = customWhite0 , containerColor = p_color1_dark),
                         enabled = !uiState.isLoading && uiState.clientCode.isNotBlank(),
                         modifier = Modifier
                             .fillMaxWidth()
