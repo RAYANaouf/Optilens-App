@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.optilens.data.db.entities.Account
+import com.example.optilens.data.db.entities.Customer
 import com.example.optilens.domain.manager.LocalUserManager
 import com.example.optilens.presentation.navgraph.AppScreen
 import com.example.optilens.presentation.navgraph.accountScreen
@@ -60,7 +61,7 @@ class MainViewModel(
 
 
     //logic vars
-    var account : Account? by mutableStateOf(null)
+    var customer : Customer? by mutableStateOf(null)
         private set
 
 
@@ -72,7 +73,7 @@ class MainViewModel(
                     val _account = localUserManager.readAccount().first()
                     if (_account != null) {
                         Log.d("success to log in", "success to read account : ${acc}")
-                        account = _account
+                        customer = _account
                         startDestination = dashboardScreen
                     } else {
                         startDestination = logInScreen

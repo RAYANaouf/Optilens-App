@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.optilens.data.db.entities.Account
+import com.example.optilens.data.db.entities.Customer
 import com.example.optilens.domain.manager.LocalUserManager
 import com.example.optilens.unit.objects.Constants
 import com.example.optilens.unit.objects.Constants.USER_SETTINGS
@@ -19,14 +20,14 @@ import kotlinx.coroutines.flow.map
 class LocalUserManager_imp(
     private val context : Context
 ) : LocalUserManager {
-    override suspend fun saveAccount(account: Account) {
+    override suspend fun saveAccount(customer: Customer) {
         context.dataStore.edit { settings ->
-            settings[PrefrencesKeys.CLIENT] = account.client
-            settings[PrefrencesKeys.CLIENT_CODE] = account.clientCode
+            settings[PrefrencesKeys.CLIENT] = customer.name
+            settings[PrefrencesKeys.CLIENT_CODE] = customer.custom_customer_code
         }
     }
 
-    override suspend fun readAccount(): Flow<Account?> {
+    override suspend fun readAccount(): Flow<Customer?> {
 
 
         return context.dataStore.data.map { preferences ->
@@ -34,9 +35,9 @@ class LocalUserManager_imp(
             if (preferences[PrefrencesKeys.CLIENT] == null || preferences[PrefrencesKeys.CLIENT] == ""){
                 null
             }else{
-                val account = Account(
-                    client         = preferences[PrefrencesKeys.CLIENT]       ?: "",
-                    clientCode     = preferences[PrefrencesKeys.CLIENT_CODE]  ?: "" ,
+                val account = Customer(
+                    name                   = preferences[PrefrencesKeys.CLIENT]       ?: "",
+                    custom_customer_code   = preferences[PrefrencesKeys.CLIENT_CODE]  ?: "" ,
                 )
                 account
             }
