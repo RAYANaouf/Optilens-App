@@ -24,6 +24,7 @@ class LocalUserManager_imp(
         context.dataStore.edit { settings ->
             settings[PrefrencesKeys.CLIENT] = customer.name
             settings[PrefrencesKeys.CLIENT_CODE] = customer.custom_customer_code ?: ""
+            settings[PrefrencesKeys.CLIENT_DEBT] = customer.custom_debt ?: ""
         }
     }
 
@@ -38,6 +39,7 @@ class LocalUserManager_imp(
                 val account = Customer(
                     name                   = preferences[PrefrencesKeys.CLIENT]       ?: "",
                     custom_customer_code   = preferences[PrefrencesKeys.CLIENT_CODE]  ?: "" ,
+                    custom_debt            = preferences[PrefrencesKeys.CLIENT_DEBT]  ?: "" ,
                 )
                 account
             }
@@ -57,4 +59,5 @@ private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(n
 private object PrefrencesKeys{
     val CLIENT       = stringPreferencesKey(name = Constants.CLIENT)
     val CLIENT_CODE  = stringPreferencesKey(name = Constants.CLIENT_CODE)
+    val CLIENT_DEBT  = stringPreferencesKey(name = Constants.CLIENT_DEBT)
     }

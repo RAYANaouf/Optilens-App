@@ -7,6 +7,7 @@ object Constants {
     //DataStore
     const val CLIENT        = "CLIENT"
     const val CLIENT_CODE   = "CLIENT_CODE"
+    const val CLIENT_DEBT   = "CLIENT_DEBT"
 
 
     //API

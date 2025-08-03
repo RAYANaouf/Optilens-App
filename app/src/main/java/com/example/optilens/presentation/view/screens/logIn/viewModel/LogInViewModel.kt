@@ -29,6 +29,7 @@ class LogInViewModel(
                         val result = authManager.logIn(LogInRequest(code = event.code))
                         if (result is LogInResponse.Success){
                             onSuccess()
+                            localUserManager.saveAccount(account = result.message.message.customer)
                             Toast.makeText(context , "Success : ${result.message.message.customer}" , Toast.LENGTH_LONG).show()
                         }else{
                             onFailed()

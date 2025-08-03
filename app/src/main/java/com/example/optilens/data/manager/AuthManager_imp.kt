@@ -27,6 +27,8 @@ class AuthManager_imp(
                 contentType(ContentType.Application.Json)
                 setBody(request)
             }
+
+            Log.d("get customer " , response.body<String>().toString())
             if ( response.status == HttpStatusCode.OK ) {
                 LogInResponse.Success(response.body())
             }else{

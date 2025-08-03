@@ -27,6 +27,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.optilens.data.db.entities.Customer
 import com.example.optilens.presentation.theme.background_color_0
 import com.example.optilens.presentation.theme.background_color_1
 import com.example.optilens.presentation.theme.customBlack3
@@ -41,6 +42,7 @@ import com.example.optilens.presentation.theme.p_color5
 
 @Composable
 fun DashboardScreen(
+    customer: Customer? ,
     modifier: Modifier = Modifier
 ) {
 
@@ -88,7 +90,7 @@ fun DashboardScreen(
                         .padding(start = 16.dp , top = 12.dp)
                 ) {
                     Text(
-                        text = "125 000 DA",
+                        text = customer?.custom_debt + " DA" ?: "---.--DA",
                         style = TextStyle(
                             fontSize = 27.sp,
                             fontWeight = FontWeight(700),
@@ -205,5 +207,9 @@ fun DashboardScreen(
 @Preview
 @Composable
 private fun DashboardScreen_prev() {
-    DashboardScreen()
+    DashboardScreen(
+        customer = Customer(
+            name = "Rayan Aouf"
+        )
+    )
 }

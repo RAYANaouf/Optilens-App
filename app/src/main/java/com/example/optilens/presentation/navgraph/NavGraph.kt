@@ -32,6 +32,7 @@ import com.example.optilens.presentation.theme.p_color2
 import com.example.optilens.presentation.theme.p_color4
 import com.example.optilens.presentation.view.screens.account.ProfileScreen
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
+import com.example.optilens.presentation.view.screens.dashboard.viewModel.DashboardViewModel
 import com.example.optilens.presentation.view.screens.invoice.InvoiceScreen
 import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDetailsScreen
 import com.example.optilens.presentation.view.screens.logIn.ClientLoginUiState
@@ -80,8 +81,11 @@ fun  NavGraph(
                     currentPage(dashboardScreen)
                 }
 
+                val viewModel = koinViewModel<DashboardViewModel>()
+
 
                 DashboardScreen(
+                    customer = viewModel.customer,
                     modifier = Modifier
                         .padding(paddingValues)
                 )
@@ -207,7 +211,11 @@ fun  NavGraph(
                             is LogInEvent.OnLoginClick ->{
                                 viewModel.onEvent(
                                     it,{
-
+                                        navController.navigate(dashboardScreen){
+                                            popUpTo(logInScreen){
+                                                inclusive = true
+                                            }
+                                        }
                                     },{
 
                                     }
