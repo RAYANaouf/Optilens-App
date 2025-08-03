@@ -160,7 +160,7 @@ fun LoginScreen(
                                 keyboardController?.hide()
                                 if (uiState.clientCode.isNotBlank()) {
                                     hasAttemptedLogin = true
-                                    onEvent(LogInEvent.OnLoginClick)
+                                    onEvent(LogInEvent.OnLoginClick(uiState.clientCode))
                                 }
                             }
                         ),
@@ -191,7 +191,7 @@ fun LoginScreen(
                         onClick = {
                             keyboardController?.hide()
                             hasAttemptedLogin = true
-                            onEvent(LogInEvent.OnLoginClick)
+                            onEvent(LogInEvent.OnLoginClick(uiState.clientCode))
                         },
                         colors = ButtonDefaults.buttonColors().copy(contentColor = customWhite0 , containerColor = p_color1_dark),
                         enabled = !uiState.isLoading && uiState.clientCode.isNotBlank(),

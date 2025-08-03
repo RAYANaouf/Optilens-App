@@ -5,9 +5,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.optilens.MainViewModel
+import com.example.optilens.data.manager.AuthManager_imp
 import com.example.optilens.data.manager.LocalUserManager_imp
+import com.example.optilens.domain.manager.AuthManager
 import com.example.optilens.domain.manager.LocalUserManager
 import com.example.optilens.presentation.view.screens.invoice.viewModel.InvoiceViewModel
+import com.example.optilens.presentation.view.screens.logIn.viewModel.LogInViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.DefaultRequest
@@ -69,6 +72,13 @@ val koinModule = module {
     }
 
 
+    single<AuthManager> {
+        AuthManager_imp(
+            client = get()
+        )
+    }
+
+
 
 
 
@@ -81,6 +91,14 @@ val koinModule = module {
 
     viewModel {
         InvoiceViewModel()
+    }
+
+    viewModel {
+        LogInViewModel(
+            localUserManager = get(),
+            authManager = get(),
+            context = get()
+        )
     }
 
 

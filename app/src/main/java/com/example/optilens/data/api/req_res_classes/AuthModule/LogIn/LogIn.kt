@@ -14,6 +14,7 @@ data class LogInRequest(
 
 //response
 
+@Serializable
 sealed class LogInResponse{
     class Success(val message : LogInSuccessResponse)  : LogInResponse()
     class Failure(val data : LogInFailureResponse)  : LogInResponse()
@@ -22,9 +23,13 @@ sealed class LogInResponse{
 
 @Serializable
 data class LogInSuccessResponse(
-    val customer  : Customer  = Customer()
+    val message : LogInSuccessMessageResponse = LogInSuccessMessageResponse()
 )
 
+@Serializable
+data class LogInSuccessMessageResponse(
+    val customer  : Customer  = Customer()
+)
 @Serializable
 data class LogInFailureResponse(
     val error      : String = "",

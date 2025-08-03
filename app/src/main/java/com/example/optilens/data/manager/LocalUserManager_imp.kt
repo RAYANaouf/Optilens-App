@@ -23,7 +23,7 @@ class LocalUserManager_imp(
     override suspend fun saveAccount(customer: Customer) {
         context.dataStore.edit { settings ->
             settings[PrefrencesKeys.CLIENT] = customer.name
-            settings[PrefrencesKeys.CLIENT_CODE] = customer.custom_customer_code
+            settings[PrefrencesKeys.CLIENT_CODE] = customer.custom_customer_code ?: ""
         }
     }
 

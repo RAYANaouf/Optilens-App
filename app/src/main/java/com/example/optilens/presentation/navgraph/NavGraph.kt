@@ -37,8 +37,10 @@ import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDeta
 import com.example.optilens.presentation.view.screens.logIn.ClientLoginUiState
 import com.example.optilens.presentation.view.screens.logIn.LoginScreen
 import com.example.optilens.presentation.view.screens.logIn.event.LogInEvent
+import com.example.optilens.presentation.view.screens.logIn.viewModel.LogInViewModel
 import com.example.optilens.presentation.view.screens.payment.PaymentScreen
 import com.example.optilens.unit.responsiveScreenTools.WindowInfo
+import org.koin.androidx.compose.koinViewModel
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -183,6 +185,8 @@ fun  NavGraph(
                     currentPage(logInScreen)
                 }
 
+                val viewModel = koinViewModel<LogInViewModel>()
+
                 var uiState by remember {
                     mutableStateOf(
                         ClientLoginUiState(
@@ -199,6 +203,15 @@ fun  NavGraph(
                         when(it){
                             is LogInEvent.OnClientCodeChange -> {
                                 uiState = uiState.copy(clientCode = it.code)
+                            }
+                            is LogInEvent.OnLoginClick ->{
+                                viewModel.onEvent(
+                                    it,{
+
+                                    },{
+
+                                    }
+                                )
                             }
                             else ->{
 
