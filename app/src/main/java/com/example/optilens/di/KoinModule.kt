@@ -9,6 +9,7 @@ import com.example.optilens.data.manager.AuthManager_imp
 import com.example.optilens.data.manager.LocalUserManager_imp
 import com.example.optilens.domain.manager.AuthManager
 import com.example.optilens.domain.manager.LocalUserManager
+import com.example.optilens.presentation.view.screens.account.viewModel.ProfileViewModel
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
 import com.example.optilens.presentation.view.screens.dashboard.viewModel.DashboardViewModel
 import com.example.optilens.presentation.view.screens.invoice.viewModel.InvoiceViewModel
@@ -105,6 +106,12 @@ val koinModule = module {
 
     viewModel {
         DashboardViewModel(
+            localUserManager = get()
+        )
+    }
+
+    viewModel {
+        ProfileViewModel(
             localUserManager = get()
         )
     }

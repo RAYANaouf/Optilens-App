@@ -31,6 +31,7 @@ import com.example.optilens.presentation.theme.p_color1_dark
 import com.example.optilens.presentation.theme.p_color2
 import com.example.optilens.presentation.theme.p_color4
 import com.example.optilens.presentation.view.screens.account.ProfileScreen
+import com.example.optilens.presentation.view.screens.account.viewModel.ProfileViewModel
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
 import com.example.optilens.presentation.view.screens.dashboard.viewModel.DashboardViewModel
 import com.example.optilens.presentation.view.screens.invoice.InvoiceScreen
@@ -145,7 +146,11 @@ fun  NavGraph(
                     currentPage(accountScreen)
                 }
 
+                val viewModel = koinViewModel<ProfileViewModel>()
+
+
                 ProfileScreen(
+                    customer = viewModel.customer,
                     modifier = Modifier
                         .padding(paddingValues)
                 )
