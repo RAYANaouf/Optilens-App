@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.Flow
 interface LocalUserManager {
 
     suspend fun saveAccount(account : Customer)
-    suspend fun readAccount() : Flow<Customer?>
+    suspend fun readAccount()    : Flow<Customer?>
+    suspend fun deleteAccount()
 
 
 }

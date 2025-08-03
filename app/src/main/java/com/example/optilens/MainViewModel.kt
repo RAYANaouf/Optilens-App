@@ -189,6 +189,12 @@ class MainViewModel(
             is MainEvent.ScreenChangeEvent -> {
                 setCurrentScreen(event.screen)
             }
+            is MainEvent.LogOutEvent -> {
+                viewModelScope.launch {
+                    localUserManager.deleteAccount()
+                    onSuccees()
+                }
+            }
             else ->{
 
             }

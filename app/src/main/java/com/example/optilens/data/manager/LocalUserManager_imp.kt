@@ -50,6 +50,15 @@ class LocalUserManager_imp(
 
     }
 
+    override suspend fun deleteAccount() {
+        context.dataStore.edit { settings ->
+            settings[PrefrencesKeys.CLIENT] = ""
+            settings[PrefrencesKeys.CLIENT_CODE] = ""
+            settings[PrefrencesKeys.CLIENT_DEBT] = ""
+        }
+
+    }
+
 
 }
 

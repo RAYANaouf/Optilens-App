@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.optilens.presentation.navgraph.NavGraph
 import com.example.optilens.presentation.navgraph.dashboardScreen
+import com.example.optilens.presentation.navgraph.logInScreen
 import com.example.optilens.presentation.theme.OptilensTheme
 import com.example.optilens.presentation.theme.background_color_0
 import com.example.optilens.presentation.theme.customWhite0
@@ -180,7 +181,25 @@ fun mainScreen(
                     ) {
                         AnimatedVisibility(visible = viewModel.show_topbar) {
                             JethingTopBar(
-                                title = viewModel.topBarTxt
+                                title = viewModel.topBarTxt,
+                                onEvent = {
+                                    when(it){
+                                        is MainEvent.LogOutEvent -> {
+                                            viewModel.onEvent(
+                                                MainEvent.LogOutEvent,{
+                                                    navController.navigate(logInScreen){
+                                                        popUpTo(dashboardScreen){
+                                                            inclusive = true
+                                                        }
+                                                    }
+                                                },{
+                                                    Toast.makeText(context,"Failed to log out",Toast.LENGTH_SHORT).show()
+                                                }
+                                            )
+                                        }
+                                        else -> {}
+                                    }
+                                }
                             )
                         }
                     }
