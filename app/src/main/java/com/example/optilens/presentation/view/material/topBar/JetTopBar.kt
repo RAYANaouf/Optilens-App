@@ -66,7 +66,7 @@ fun JethingTopBar(
                 .fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(R.drawable.logo),
+                painter = painterResource(R.drawable.optilens_logo),
                 contentDescription = null,
                 contentScale = ContentScale.Inside,
                 modifier = Modifier

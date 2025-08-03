@@ -96,7 +96,7 @@ fun LoginScreen(
 
             // 1. Logo
             Image(
-                painter = painterResource(id = R.drawable.logo), // Replace with your logo
+                painter = painterResource(id = R.drawable.optilens_logo), // Replace with your logo
                 contentDescription = "Optilens Logo",
                 modifier = Modifier
                     .fillMaxWidth(0.80f)// Adjust size as needed
