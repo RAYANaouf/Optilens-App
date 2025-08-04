@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.optilens.data.db.entities.Customer
+import com.example.optilens.data.db.entities.Invoice
 import com.example.optilens.presentation.theme.background_color_0
 import com.example.optilens.presentation.theme.background_color_1
 import com.example.optilens.presentation.theme.customBlack3
@@ -38,19 +41,35 @@ import com.example.optilens.presentation.theme.p_color1
 import com.example.optilens.presentation.theme.p_color1_dark
 import com.example.optilens.presentation.theme.p_color4
 import com.example.optilens.presentation.theme.p_color5
+import com.example.optilens.presentation.view.screens.dashboard.event.DashboardEvent.DashboardEvent
 
 
 @Composable
 fun DashboardScreen(
-    customer: Customer? ,
+    onEvent : (DashboardEvent , ()->Unit , ()->Unit)->Unit = {_,_,_->},
+    customer: Customer?,
+    invoices : List<Invoice> = emptyList(),
     modifier: Modifier = Modifier
 ) {
+
+    LaunchedEffect(customer) {
+        customer?.let {
+            onEvent(
+                DashboardEvent.GetInvoicesByCustomerCode(it.custom_customer_code),{
+
+                },{
+
+                }
+            )
+        }
+    }
 
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(background_color_0)
     ) {
+
         item {
             Column(
                 modifier = Modifier
@@ -118,9 +137,9 @@ fun DashboardScreen(
             Spacer(Modifier.height(15.dp))
         }
 
-        items(
-            count = 10,
-        ){
+
+
+        items(invoices){
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -148,7 +167,7 @@ fun DashboardScreen(
                                     fontWeight = FontWeight(400)
                                 )
                             ){
-                                append("F/POS/2025/059448")
+                                append(it.name)
                             }
                         },
                         style = TextStyle(
@@ -172,7 +191,7 @@ fun DashboardScreen(
                                     fontWeight = FontWeight(400)
                                 )
                             ){
-                                append("8800 DA")
+                                append(it.grand_total)
                             }
                         },
                         style = TextStyle(
@@ -185,7 +204,7 @@ fun DashboardScreen(
                     modifier = Modifier
                 ) {
                     Text(
-                        text = "5500 DA",
+                        text = it.outstanding_amount + " DA",
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontWeight = FontWeight(550),
@@ -198,6 +217,7 @@ fun DashboardScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
         }
+
     }
 
 }

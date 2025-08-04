@@ -6,8 +6,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.optilens.MainViewModel
 import com.example.optilens.data.manager.AuthManager_imp
+import com.example.optilens.data.manager.InvoiceManager_imp
 import com.example.optilens.data.manager.LocalUserManager_imp
 import com.example.optilens.domain.manager.AuthManager
+import com.example.optilens.domain.manager.InvoiceManager
 import com.example.optilens.domain.manager.LocalUserManager
 import com.example.optilens.presentation.view.screens.account.viewModel.ProfileViewModel
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
@@ -82,6 +84,13 @@ val koinModule = module {
     }
 
 
+    single<InvoiceManager> {
+        InvoiceManager_imp(
+            client = get()
+        )
+    }
+
+
 
 
 
@@ -106,7 +115,9 @@ val koinModule = module {
 
     viewModel {
         DashboardViewModel(
-            localUserManager = get()
+            localUserManager = get(),
+            invoiceManager = get(),
+            context = get()
         )
     }
 

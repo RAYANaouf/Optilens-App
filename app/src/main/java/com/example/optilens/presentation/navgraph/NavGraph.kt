@@ -86,7 +86,9 @@ fun  NavGraph(
 
 
                 DashboardScreen(
+                    onEvent = viewModel::onEvent,
                     customer = viewModel.customer,
+                    invoices = viewModel.invoices,
                     modifier = Modifier
                         .padding(paddingValues)
                 )

@@ -1,5 +1,7 @@
 package com.example.optilens.unit.objects
 
+import com.example.optilens.data.api.req_res_classes.InvoicesModules.GetInvoicesByCustomerCode.GetInvoicesByCustomerCodeResponse
+
 
 object Constants {
     const val USER_SETTINGS = "USER_SETTINGS"
@@ -14,6 +16,7 @@ object Constants {
     const val BASE_URL      = "https://optilens.halfware.info/api/method/"
 
     const val LOG_IN        = "mobile_app.api.get_client_by_code"
+    const val GET_INVOICES_BY_CUSTOMER_CODE        = "mobile_app.api.get_invoices_by_customer_code"
 
 }
 
