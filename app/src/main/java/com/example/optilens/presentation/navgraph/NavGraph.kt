@@ -35,6 +35,7 @@ import com.example.optilens.presentation.view.screens.account.viewModel.ProfileV
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
 import com.example.optilens.presentation.view.screens.dashboard.viewModel.DashboardViewModel
 import com.example.optilens.presentation.view.screens.invoice.InvoiceScreen
+import com.example.optilens.presentation.view.screens.invoice.viewModel.InvoiceViewModel
 import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDetailsScreen
 import com.example.optilens.presentation.view.screens.logIn.ClientLoginUiState
 import com.example.optilens.presentation.view.screens.logIn.LoginScreen
@@ -106,7 +107,12 @@ fun  NavGraph(
                     currentPage(invoiceScreen)
                 }
 
+                val viewModel = koinViewModel<InvoiceViewModel>()
+
                 InvoiceScreen(
+                    onEvent    = viewModel::onEvent,
+                    invoices   = viewModel.invoices,
+                    customer   = viewModel.customer,
                     onNavigate = {
                         navController.navigate(it)
                     },

@@ -1,4 +1,4 @@
-package com.example.optilens.presentation.view.screens.dashboard.event.DashboardEvent
+package com.example.optilens.presentation.view.screens.dashboard.event
 
 sealed class DashboardEvent {
 

@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,22 +35,41 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.optilens.data.db.entities.Customer
+import com.example.optilens.data.db.entities.Invoice
 import com.example.optilens.presentation.navgraph.AppScreen
 import com.example.optilens.presentation.navgraph.invoiceDetailsScreen
 import com.example.optilens.presentation.theme.p_color1
 import com.example.optilens.presentation.theme.p_color1_dark
 import com.example.optilens.presentation.theme.p_color5
 import com.example.optilens.presentation.view.material.AlphaTextFields.JethingsTextField
+import com.example.optilens.presentation.view.screens.dashboard.event.DashboardEvent
+import com.example.optilens.presentation.view.screens.invoice.event.InvoiceEvent
 
 
 @Composable
 fun InvoiceScreen(
+    onEvent : (InvoiceEvent, ()->Unit, ()->Unit)->Unit = { _, _, _->},
+    customer: Customer? = null,
+    invoices : List<Invoice> = emptyList(),
     onNavigate : (AppScreen)->Unit = {},
     modifier: Modifier = Modifier
 ) {
 
     var search by remember {
         mutableStateOf("")
+    }
+
+    LaunchedEffect(customer) {
+        customer?.let {
+            onEvent(
+                InvoiceEvent.GetInvoicesByCustomerCode(it.custom_customer_code),{
+
+                },{
+
+                }
+            )
+        }
     }
 
 
@@ -152,7 +172,7 @@ fun InvoiceScreen(
         Spacer(Modifier.height(16.dp))
 
 
-        for ( i in 1..20){
+        for ( i in invoices){
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -183,7 +203,7 @@ fun InvoiceScreen(
                                     fontWeight = FontWeight(400)
                                 )
                             ){
-                                append("F/POS/2025/059448")
+                                append(i.name)
                             }
                         },
                         style = TextStyle(
@@ -207,7 +227,7 @@ fun InvoiceScreen(
                                     fontWeight = FontWeight(400)
                                 )
                             ){
-                                append("8800 DA")
+                                append(i.grand_total)
                             }
                         },
                         style = TextStyle(
@@ -220,7 +240,7 @@ fun InvoiceScreen(
                     modifier = Modifier
                 ) {
                     Text(
-                        text = "5500 DA",
+                        text = i.outstanding_amount,
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontWeight = FontWeight(550),

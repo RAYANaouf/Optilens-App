@@ -85,7 +85,7 @@ fun InvoiceDetailsScreen(
 
     LaunchedEffect(true) {
         coroutineScope.launch {
-            delay(2500)
+            delay(900)
             viewModel.updateState(
                 InvoiceDetailsUiState.Success(
                     Invoice(

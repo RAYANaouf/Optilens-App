@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,21 +31,16 @@ import androidx.compose.ui.unit.sp
 import com.example.optilens.data.db.entities.Customer
 import com.example.optilens.data.db.entities.Invoice
 import com.example.optilens.presentation.theme.background_color_0
-import com.example.optilens.presentation.theme.background_color_1
 import com.example.optilens.presentation.theme.customBlack3
-import com.example.optilens.presentation.theme.customWhite1
-import com.example.optilens.presentation.theme.customWhite2
-import com.example.optilens.presentation.theme.customWhite4
 import com.example.optilens.presentation.theme.p_color1
 import com.example.optilens.presentation.theme.p_color1_dark
-import com.example.optilens.presentation.theme.p_color4
 import com.example.optilens.presentation.theme.p_color5
-import com.example.optilens.presentation.view.screens.dashboard.event.DashboardEvent.DashboardEvent
+import com.example.optilens.presentation.view.screens.dashboard.event.DashboardEvent
 
 
 @Composable
 fun DashboardScreen(
-    onEvent : (DashboardEvent , ()->Unit , ()->Unit)->Unit = {_,_,_->},
+    onEvent : (DashboardEvent, ()->Unit, ()->Unit)->Unit = { _, _, _->},
     customer: Customer?,
     invoices : List<Invoice> = emptyList(),
     modifier: Modifier = Modifier

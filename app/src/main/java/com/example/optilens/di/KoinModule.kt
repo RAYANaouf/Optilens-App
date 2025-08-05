@@ -102,7 +102,10 @@ val koinModule = module {
     }
 
     viewModel {
-        InvoiceViewModel()
+        InvoiceViewModel(
+            localUserManager = get(),
+            invoiceManager = get()
+        )
     }
 
     viewModel {
@@ -116,8 +119,7 @@ val koinModule = module {
     viewModel {
         DashboardViewModel(
             localUserManager = get(),
-            invoiceManager = get(),
-            context = get()
+            invoiceManager = get()
         )
     }
 

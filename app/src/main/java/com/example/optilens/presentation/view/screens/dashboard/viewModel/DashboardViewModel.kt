@@ -14,15 +14,14 @@ import com.example.optilens.data.db.entities.Customer
 import com.example.optilens.data.db.entities.Invoice
 import com.example.optilens.domain.manager.InvoiceManager
 import com.example.optilens.domain.manager.LocalUserManager
-import com.example.optilens.presentation.view.screens.dashboard.event.DashboardEvent.DashboardEvent
+import com.example.optilens.presentation.view.screens.dashboard.event.DashboardEvent
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
     private val localUserManager: LocalUserManager,
-    private val invoiceManager  : InvoiceManager,
-    private val context: Context
+    private val invoiceManager  : InvoiceManager
 ) : ViewModel() {
 
 
@@ -39,7 +38,7 @@ class DashboardViewModel(
         }
     }
 
-    fun onEvent( event : DashboardEvent , onSuccess : ()->Unit , onFailure : () ->Unit){
+    fun onEvent(event : DashboardEvent, onSuccess : ()->Unit, onFailure : () ->Unit){
         when(event){
             is DashboardEvent.GetInvoicesByCustomerCode -> {
                 viewModelScope.launch {
@@ -49,17 +48,13 @@ class DashboardViewModel(
                         invoices.clear()
                         invoices.addAll(result.message.message.pos_invoices)
                         invoices.addAll(result.message.message.sales_invoices)
-                        Log.d("get all invoice by customer code : " , result.toString())
-                        Toast.makeText(context , "success" , Toast.LENGTH_LONG).show()
                     }else if (result is GetInvoicesByCustomerCodeResponse.Failure){
                         onFailure()
-                        Log.d("get all invoice by customer code : " , result.toString())
-                        Toast.makeText(context , "Failure" , Toast.LENGTH_LONG).show()
+                        Log.d("get all invoice by customer code : " , result.data.toString())
                     }else if( result is GetInvoicesByCustomerCodeResponse.Exception){
 
                         onFailure()
                         Log.d("get all invoice by customer code : " , result.data.toString())
-                        Toast.makeText(context , "Exception" , Toast.LENGTH_LONG).show()
                     }
                 }
             }
