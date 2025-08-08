@@ -63,6 +63,7 @@ import kotlinx.coroutines.delay
 data class DrawerItem(
     val text : String,
     @DrawableRes val icon : Int,
+    val screen : AppScreen? = null,
     val notifications : Int = 0
 )
 
@@ -139,6 +140,9 @@ fun NavigationDrawer(
                         notifications = item.notifications,
                         delayMillis = index * 200L,
                         onClick = {
+                            if (item.screen != null){
+                                onNavigate(item.screen)
+                            }
                             onClose()
                         }
                     )

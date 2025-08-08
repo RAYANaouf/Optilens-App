@@ -65,6 +65,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.optilens.presentation.navgraph.NavGraph
 import com.example.optilens.presentation.navgraph.dashboardScreen
 import com.example.optilens.presentation.navgraph.logInScreen
+import com.example.optilens.presentation.navgraph.notificationsScreen
 import com.example.optilens.presentation.theme.OptilensTheme
 import com.example.optilens.presentation.theme.background_color_0
 import com.example.optilens.presentation.theme.background_color_1
@@ -169,7 +170,7 @@ fun mainScreen(
             mutableStateOf(null)
         }
 
-        notification = DrawerItem("Notification" , R.drawable.notification , viewModel.notifications.size)
+        notification = DrawerItem("Notification" , R.drawable.notification , notifications = viewModel.notifications.size , screen = notificationsScreen(code = viewModel.customer?.custom_customer_code ?: ""))
 
 
 
@@ -179,9 +180,12 @@ fun mainScreen(
             ) {
                 NavigationDrawer(
                     items = listOf(
-                        DrawerItem("Home"         , R.drawable.home),
-                        notification ?: DrawerItem("Notification" , R.drawable.notification , 0),
+                        DrawerItem(text = "Home" , icon = R.drawable.home , screen = dashboardScreen),
+                        notification ?: DrawerItem("Notification" , R.drawable.notification , notifications =  0 , screen = notificationsScreen(code = viewModel.customer?.custom_customer_code ?: "")),
                         ),
+                    onNavigate = {
+                        navController.navigate(it)
+                    },
                     onClose = {
                         drawerState = false
                     }
@@ -261,7 +265,8 @@ fun mainScreen(
                     },
                     currentPage = {
                         viewModel.onEvent(MainEvent.ScreenChangeEvent(it))
-                    }
+                    },
+                    notifications = viewModel.notifications
                 )
             }
         }

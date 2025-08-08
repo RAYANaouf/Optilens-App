@@ -20,6 +20,8 @@ import com.example.optilens.presentation.view.screens.invoice.viewModel.InvoiceV
 import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDetailsUiState
 import com.example.optilens.presentation.view.screens.invoiceDetails.viewModel.InvoiceDetailsViewModel
 import com.example.optilens.presentation.view.screens.logIn.viewModel.LogInViewModel
+import com.example.optilens.presentation.view.screens.notification.NotificationScreen
+import com.example.optilens.presentation.view.screens.notification.viewModel.NotificationViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.DefaultRequest
@@ -145,5 +147,13 @@ val koinModule = module {
             initialState = InvoiceDetailsUiState.Loading
         )
     }
+
+
+    viewModel {
+        NotificationViewModel(
+            notificationManager = get()
+        )
+    }
+
 
 }

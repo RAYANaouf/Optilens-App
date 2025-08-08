@@ -25,6 +25,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.example.optilens.data.db.entities.Notification
 import com.example.optilens.presentation.theme.background_color_0
 import com.example.optilens.presentation.theme.customWhite0
 import com.example.optilens.presentation.theme.p_color1_dark
@@ -42,6 +44,8 @@ import com.example.optilens.presentation.view.screens.logIn.ClientLoginUiState
 import com.example.optilens.presentation.view.screens.logIn.LoginScreen
 import com.example.optilens.presentation.view.screens.logIn.event.LogInEvent
 import com.example.optilens.presentation.view.screens.logIn.viewModel.LogInViewModel
+import com.example.optilens.presentation.view.screens.notification.NotificationScreen
+import com.example.optilens.presentation.view.screens.notification.viewModel.NotificationViewModel
 import com.example.optilens.presentation.view.screens.payment.PaymentScreen
 import com.example.optilens.unit.responsiveScreenTools.WindowInfo
 import org.koin.androidx.compose.koinViewModel
@@ -55,7 +59,9 @@ fun  NavGraph(
     currentPage      : (AppScreen)->Unit = {},
     currentScene     : (String)->Unit    = {},
     windowInfo       : WindowInfo,
-    paddingValues    : PaddingValues
+    paddingValues    : PaddingValues,
+
+    notifications : List<Notification> = emptyList()
 ) {
 
     set_system_bars_color(
@@ -185,6 +191,35 @@ fun  NavGraph(
 
                 InvoiceDetailsScreen(
                     viewModel = viewModel,
+                    modifier = Modifier
+                        .padding(paddingValues)
+                )
+
+            }
+
+
+            /********************************  notification  ******************************/
+
+            composable<notificationsScreen> {
+
+
+                set_system_bars_color(
+                    statusBarColor     =  customWhite0,
+                    navigationBarColor =  customWhite0
+                )
+
+                val args = it.toRoute<notificationsScreen>()
+
+                SideEffect {
+                    currentPage(notificationsScreen(args.code))
+                }
+
+
+
+                val viewModel = koinViewModel<NotificationViewModel>()
+
+                NotificationScreen(
+                    notifications = notifications,
                     modifier = Modifier
                         .padding(paddingValues)
                 )

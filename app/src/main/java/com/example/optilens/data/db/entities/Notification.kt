@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
 data class Notification(
     @PrimaryKey()
     val name               : String   ,
-    val msg                : String   ,
+    val title              : String? = "" ,
+    val msg                : String  = ""   ,
     val read               : Boolean = false ,
 )

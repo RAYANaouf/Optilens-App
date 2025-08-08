@@ -24,3 +24,6 @@ object accountScreen : AppScreen()
 
 @Serializable
 object invoiceDetailsScreen : AppScreen()
+
+@Serializable
+data class notificationsScreen(val code : String) : AppScreen()
