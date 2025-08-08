@@ -2,14 +2,18 @@ package com.example.optilens
 
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.optilens.data.api.req_res_classes.InvoicesModules.GetInvoicesByCustomerCode.GetNotificationsByCustomerCodeResponse
 import com.example.optilens.data.db.entities.Account
 import com.example.optilens.data.db.entities.Customer
+import com.example.optilens.data.db.entities.Notification
 import com.example.optilens.domain.manager.LocalUserManager
+import com.example.optilens.domain.manager.NotificationManager
 import com.example.optilens.presentation.navgraph.AppScreen
 import com.example.optilens.presentation.navgraph.accountScreen
 import com.example.optilens.presentation.navgraph.dashboardScreen
@@ -22,7 +26,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val localUserManager : LocalUserManager,
+    private val localUserManager    : LocalUserManager,
+    private val notificationManager : NotificationManager,
 ) : ViewModel() {
 
     var startDestination by mutableStateOf<AppScreen>(logInScreen)
@@ -64,6 +69,9 @@ class MainViewModel(
     var customer : Customer? by mutableStateOf(null)
         private set
 
+    val notifications = mutableStateListOf<Notification>()
+
+
 
     init {
 
@@ -75,6 +83,7 @@ class MainViewModel(
                         Log.d("success to log in", "success to read account : ${acc}")
                         customer = _account
                         startDestination = dashboardScreen
+                        onEvent(MainEvent.GetNotificationsByCustomerCodeEvent(acc.custom_customer_code))
                     } else {
                         startDestination = logInScreen
                     }
@@ -193,6 +202,24 @@ class MainViewModel(
                 viewModelScope.launch {
                     localUserManager.deleteAccount()
                     onSuccees()
+                }
+            }
+            is MainEvent.GetNotificationsByCustomerCodeEvent -> {
+                viewModelScope.launch {
+                    val result = notificationManager.getNotificationByCustomerCode(event.code)
+                    if (result is GetNotificationsByCustomerCodeResponse.Success){
+                        Log.d("get notifications by customer code" , "success")
+                        notifications.clear()
+                        notifications.addAll(result.data.message.notification)
+                        Log.d("get notifications by customer code" , "success : ${result.data.message.notification}")
+                        onSuccees()
+                    }else if(result is GetNotificationsByCustomerCodeResponse.Failure){
+                        Log.d("get notifications by customer code" , "Failed")
+                        onFailure()
+                    }else if (result is GetNotificationsByCustomerCodeResponse.Exception){
+                        Log.d("get notifications by customer code" , "Exception : ${result.data}")
+                        onFailure()
+                    }
                 }
             }
             else ->{

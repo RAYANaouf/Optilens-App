@@ -17,6 +17,7 @@ object Constants {
 
     const val LOG_IN        = "mobile_app.api.get_client_by_code"
     const val GET_INVOICES_BY_CUSTOMER_CODE        = "mobile_app.api.get_invoices_by_customer_code"
+    const val GET_NOTIFICATIONS_BY_CUSTOMER_CODE   = "mobile_app.api.get_notification_by_customer_code"
 
 }
 

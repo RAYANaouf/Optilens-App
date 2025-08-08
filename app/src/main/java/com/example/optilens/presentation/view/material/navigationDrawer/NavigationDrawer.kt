@@ -1,11 +1,13 @@
 package com.example.optilens.presentation.view.material.navigationDrawer
 
+import android.graphics.Paint.Align
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -43,20 +46,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.optilens.MainEvent
 import com.example.optilens.R
 import com.example.optilens.presentation.navgraph.AppScreen
 import com.example.optilens.presentation.theme.background_color_0
 import com.example.optilens.presentation.theme.customBlack3
+import com.example.optilens.presentation.theme.customWhite0
 import com.example.optilens.presentation.theme.p_color1
 import com.example.optilens.presentation.theme.p_color1_dark
 import com.example.optilens.presentation.theme.p_color2
+import com.example.optilens.presentation.theme.p_color2_dark
 import kotlinx.coroutines.delay
 
 
 data class DrawerItem(
     val text : String,
-    @DrawableRes val icon : Int
+    @DrawableRes val icon : Int,
+    val notifications : Int = 0
 )
 
 @Composable
@@ -129,6 +136,7 @@ fun NavigationDrawer(
                     drawerItem(
                         text = item.text,
                         icon = item.icon,
+                        notifications = item.notifications,
                         delayMillis = index * 200L,
                         onClick = {
                             onClose()
@@ -146,6 +154,7 @@ fun NavigationDrawer(
 fun drawerItem(
     text : String,
     @DrawableRes icon : Int,
+    notifications: Int,
     delayMillis: Long,
     onClick: () -> Unit
 ) {
@@ -173,13 +182,37 @@ fun drawerItem(
                 .padding(start = 8.dp)
         ) {
 
-            Icon(
-                painter = painterResource(id = icon),
-                contentDescription =null,
-                tint = p_color1,
-                modifier = Modifier
-                    .size(26.dp)
-            )
+            Box {
+
+                if (notifications > 0) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .size(16.dp)
+                            .clip(CircleShape)
+                            .background(p_color2_dark)
+                            .align(Alignment.TopEnd)
+                            .zIndex(10f)
+                    ){
+                        Text(
+                            "$notifications",
+                            style = TextStyle(
+                                color = customWhite0,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight(600)
+                            )
+                        )
+                    }
+                }
+
+                Icon(
+                    painter = painterResource(id = icon),
+                    contentDescription =null,
+                    tint = p_color1,
+                    modifier = Modifier
+                        .size(30.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.width(16.dp))
 

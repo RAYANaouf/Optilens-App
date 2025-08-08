@@ -165,6 +165,14 @@ fun mainScreen(
 
         val context = LocalContext.current
 
+        var notification : DrawerItem? by remember {
+            mutableStateOf(null)
+        }
+
+        notification = DrawerItem("Notification" , R.drawable.notification , viewModel.notifications.size)
+
+
+
         Row {
             AnimatedVisibility(
                 visible = drawerState
@@ -172,7 +180,7 @@ fun mainScreen(
                 NavigationDrawer(
                     items = listOf(
                         DrawerItem("Home"         , R.drawable.home),
-                        DrawerItem("Notification" , R.drawable.notification),
+                        notification ?: DrawerItem("Notification" , R.drawable.notification , 0),
                         ),
                     onClose = {
                         drawerState = false
