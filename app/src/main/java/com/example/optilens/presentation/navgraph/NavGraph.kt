@@ -37,6 +37,7 @@ import com.example.optilens.presentation.view.screens.dashboard.viewModel.Dashbo
 import com.example.optilens.presentation.view.screens.invoice.InvoiceScreen
 import com.example.optilens.presentation.view.screens.invoice.viewModel.InvoiceViewModel
 import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDetailsScreen
+import com.example.optilens.presentation.view.screens.invoiceDetails.viewModel.InvoiceDetailsViewModel
 import com.example.optilens.presentation.view.screens.logIn.ClientLoginUiState
 import com.example.optilens.presentation.view.screens.logIn.LoginScreen
 import com.example.optilens.presentation.view.screens.logIn.event.LogInEvent
@@ -180,7 +181,10 @@ fun  NavGraph(
                     currentPage(invoiceDetailsScreen)
                 }
 
+                val viewModel = koinViewModel<InvoiceDetailsViewModel>()
+
                 InvoiceDetailsScreen(
+                    viewModel = viewModel,
                     modifier = Modifier
                         .padding(paddingValues)
                 )

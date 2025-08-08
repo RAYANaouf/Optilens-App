@@ -41,7 +41,7 @@ val customBlack8 = Color(0xFF8A8A8A)
 
 
 val background_color_0 = Color(0xFFF7FFFE)
-val background_color_1 = Color(0xFFE4E6F5)
+val background_color_1 = Color(0xFFEDFFFD)
 
 
 

@@ -7,6 +7,7 @@ sealed class MainEvent {
 
     class ScreenChangeEvent(val screen : AppScreen) : MainEvent()
     object LogOutEvent : MainEvent()
+    object OpenDrawerEvent : MainEvent()
 
 
 }

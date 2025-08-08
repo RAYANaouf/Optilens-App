@@ -72,6 +72,9 @@ fun JethingTopBar(
                 modifier = Modifier
                     .height(55.dp)
                     .width(110.dp)
+                    .clickable {
+                        onEvent(MainEvent.OpenDrawerEvent)
+                    }
                     .padding(start = 16.dp)
             )
             Box(

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -55,6 +57,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,9 +67,14 @@ import com.example.optilens.presentation.navgraph.dashboardScreen
 import com.example.optilens.presentation.navgraph.logInScreen
 import com.example.optilens.presentation.theme.OptilensTheme
 import com.example.optilens.presentation.theme.background_color_0
+import com.example.optilens.presentation.theme.background_color_1
 import com.example.optilens.presentation.theme.customWhite0
 import com.example.optilens.presentation.theme.p_color1
+import com.example.optilens.presentation.theme.p_color1_dark
 import com.example.optilens.presentation.theme.p_color2
+import com.example.optilens.presentation.theme.p_color2_dark
+import com.example.optilens.presentation.view.material.navigationDrawer.DrawerItem
+import com.example.optilens.presentation.view.material.navigationDrawer.NavigationDrawer
 import com.example.optilens.presentation.view.material.topBar.JethingBottomBar
 import com.example.optilens.presentation.view.material.topBar.JethingTopBar
 import com.example.optilens.unit.responsiveScreenTools.rememberWindowInfo
@@ -130,6 +138,7 @@ fun mainScreen(
 
     Box(
         modifier = modifier
+            .background(customWhite0)
     ) {
 
         Box(
@@ -138,12 +147,11 @@ fun mainScreen(
                 .safeDrawingPadding()
                 .align(Alignment.TopEnd)
                 .size(85.dp)
-                .background(p_color1)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.close) ,
                 contentDescription = null ,
-                tint = p_color1,
+                tint = p_color1_dark,
                 modifier = Modifier
                     .size(26.dp)
                     .clickable(
@@ -161,6 +169,15 @@ fun mainScreen(
             AnimatedVisibility(
                 visible = drawerState
             ) {
+                NavigationDrawer(
+                    items = listOf(
+                        DrawerItem("Home"         , R.drawable.home),
+                        DrawerItem("Notification" , R.drawable.notification),
+                        ),
+                    onClose = {
+                        drawerState = false
+                    }
+                )
             }
         }
 
@@ -197,6 +214,9 @@ fun mainScreen(
                                                 }
                                             )
                                         }
+                                        is MainEvent.OpenDrawerEvent ->{
+                                            drawerState = true
+                                        }
                                         else -> {}
                                     }
                                 }
@@ -223,8 +243,6 @@ fun mainScreen(
                 modifier = Modifier
                     .fillMaxSize()
             ) {padding->
-
-
                 NavGraph(
                     navController = navController,
                     startDestination = viewModel.startDestination,
@@ -237,7 +255,6 @@ fun mainScreen(
                         viewModel.onEvent(MainEvent.ScreenChangeEvent(it))
                     }
                 )
-
             }
         }
 
@@ -245,18 +262,25 @@ fun mainScreen(
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .background(p_color2)
         ) {
             AnimatedVisibility(visible = drawerState) {
-                Box(
-                    contentAlignment = Alignment.Center,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(bottom = 45.dp)
-                        .fillMaxWidth()
                 ){
+                    Image(
+                        painter = painterResource(R.drawable.jethings_logo),
+                        contentDescription = null,
+                        contentScale = ContentScale.Inside,
+                        modifier = Modifier.size(45.dp)
+                    )
+                    Spacer(Modifier.width(12.dp))
                     Text(
                         text = "Powered by Jethings",
-                        fontSize = 20.sp
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight(600),
+                        color = p_color1_dark
                     )
                 }
             }

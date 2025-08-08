@@ -15,6 +15,8 @@ import com.example.optilens.presentation.view.screens.account.viewModel.ProfileV
 import com.example.optilens.presentation.view.screens.dashboard.DashboardScreen
 import com.example.optilens.presentation.view.screens.dashboard.viewModel.DashboardViewModel
 import com.example.optilens.presentation.view.screens.invoice.viewModel.InvoiceViewModel
+import com.example.optilens.presentation.view.screens.invoiceDetails.InvoiceDetailsUiState
+import com.example.optilens.presentation.view.screens.invoiceDetails.viewModel.InvoiceDetailsViewModel
 import com.example.optilens.presentation.view.screens.logIn.viewModel.LogInViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -126,6 +128,12 @@ val koinModule = module {
     viewModel {
         ProfileViewModel(
             localUserManager = get()
+        )
+    }
+
+    viewModel {
+        InvoiceDetailsViewModel(
+            initialState = InvoiceDetailsUiState.Loading
         )
     }
 

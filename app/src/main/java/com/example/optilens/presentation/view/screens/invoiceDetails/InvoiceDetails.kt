@@ -1,5 +1,6 @@
 package com.example.optilens.presentation.view.screens.invoiceDetails
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,18 +22,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.optilens.presentation.theme.OptilensTheme
+import com.example.optilens.presentation.view.screens.invoiceDetails.viewModel.InvoiceDetailsViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 data class Invoice(
@@ -61,62 +68,59 @@ sealed interface InvoiceDetailsUiState {
     data class Error(val message: String) : InvoiceDetailsUiState
 }
 
-// Example ViewModel (place in your presentation.viewmodel or presentation.screens.invoiceDetails)
-// In a real app, inject dependencies like a repository and invoiceId (via SavedStateHandle)
-class FakeInvoiceDetailsViewModel(initialState: InvoiceDetailsUiState) { // Simplified for preview
-    private var _uiState = MutableStateFlow(initialState)
-    val uiState: StateFlow<InvoiceDetailsUiState> = _uiState
-    // In a real ViewModel, you'd have functions to fetch data
-
-    fun updateState(newState: InvoiceDetailsUiState) {
-        _uiState.value = newState
-    }
-}
 
 @Composable
 fun InvoiceDetailsScreen(
     modifier: Modifier = Modifier,
-    viewModel: FakeInvoiceDetailsViewModel = FakeInvoiceDetailsViewModel(InvoiceDetailsUiState.Loading) // In real app: InvoiceDetailsViewModel
+    viewModel: InvoiceDetailsViewModel = InvoiceDetailsViewModel(InvoiceDetailsUiState.Loading)
 ) {
-    val uiState by viewModel.uiState.collectAsState()
 
 
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     LaunchedEffect(true) {
         coroutineScope.launch {
+
+            Toast.makeText(context , "${viewModel.uiState}" , Toast.LENGTH_SHORT).show()
             delay(900)
-            viewModel.updateState(
-                InvoiceDetailsUiState.Success(
-                    Invoice(
-                        id = "prev123",
-                        invoiceNumber = "PREV-001",
-                        customerName = "Akram Duira",
-                        issueDate = "2023-10-01",
-                        dueDate = "2023-10-15",
-                        items = listOf(
-                            InvoiceItem("1.56 HMC +0.00 +0.25", 10, 120.0),
-                            InvoiceItem("1.56 HMC +0.00 +0.50", 5, 150.0),
-                            InvoiceItem("1.56 HMC +0.00 +0.75", 17, 120.0),
-                            InvoiceItem("1.56 HC +2.00 +0.50", 3, 150.0),
-                            InvoiceItem("1.56 HMC +1.25 +1.75", 2, 120.0),
-                            InvoiceItem("1.56 HMC +3.00 +0.50", 5, 150.0),
-                            InvoiceItem("1.56 BB Blue +0.00 +0.25", 10, 120.0),
-                            InvoiceItem("1.56 BB Blue +0.00 +0.50", 5, 150.0),
-                            InvoiceItem("1.56 BB Blue +0.00 +0.75", 17, 120.0),
-                            InvoiceItem("1.56 BB Blue +2.00 +0.50", 3, 150.0),
-                            InvoiceItem("1.56 BB Blue +1.25 +1.75", 2, 120.0),
-                            InvoiceItem("1.56 HMC +3.00 +0.50", 5, 150.0),
-                            InvoiceItem("1.56 HC +0.00 +0.25", 8, 120.0),
-                            InvoiceItem("1.56 HC +0.00 +0.50", 7, 150.0),
-                         ),
-                        subtotal = 1750.0,
-                        taxAmount = 175.0,
-                        totalAmount = 1925.0,
-                        status = "Paid"
+
+            withContext(Dispatchers.Main) {
+
+                viewModel.updateState(
+                    InvoiceDetailsUiState.Success(
+                        Invoice(
+                            id = "prev123",
+                            invoiceNumber = "PREV-001",
+                            customerName = "Akram Duira",
+                            issueDate = "2023-10-01",
+                            dueDate = "2023-10-15",
+                            items = listOf(
+                                InvoiceItem("1.56 HMC +0.00 +0.25", 10, 120.0),
+                                InvoiceItem("1.56 HMC +0.00 +0.50", 5, 150.0),
+                                InvoiceItem("1.56 HMC +0.00 +0.75", 17, 120.0),
+                                InvoiceItem("1.56 HC +2.00 +0.50", 3, 150.0),
+                                InvoiceItem("1.56 HMC +1.25 +1.75", 2, 120.0),
+                                InvoiceItem("1.56 HMC +3.00 +0.50", 5, 150.0),
+                                InvoiceItem("1.56 BB Blue +0.00 +0.25", 10, 120.0),
+                                InvoiceItem("1.56 BB Blue +0.00 +0.50", 5, 150.0),
+                                InvoiceItem("1.56 BB Blue +0.00 +0.75", 17, 120.0),
+                                InvoiceItem("1.56 BB Blue +2.00 +0.50", 3, 150.0),
+                                InvoiceItem("1.56 BB Blue +1.25 +1.75", 2, 120.0),
+                                InvoiceItem("1.56 HMC +3.00 +0.50", 5, 150.0),
+                                InvoiceItem("1.56 HC +0.00 +0.25", 8, 120.0),
+                                InvoiceItem("1.56 HC +0.00 +0.50", 7, 150.0),
+                            ),
+                            subtotal = 1750.0,
+                            taxAmount = 175.0,
+                            totalAmount = 1925.0,
+                            status = "Paid"
+                        )
                     )
                 )
-            )
+            }
+
+            Toast.makeText(context , "${viewModel.uiState}" , Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -125,18 +129,18 @@ fun InvoiceDetailsScreen(
             .fillMaxSize()
             .padding(16.dp) // Add padding if the parent Scaffold doesn't provide it directly to this content
     ) {
-        when (val state = uiState) {
+        when (viewModel.uiState) {
             is InvoiceDetailsUiState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
             is InvoiceDetailsUiState.Success -> {
-                InvoiceContent(invoice = state.invoice, modifier = Modifier.fillMaxSize())
+                InvoiceContent(invoice = (viewModel.uiState as InvoiceDetailsUiState.Success).invoice, modifier = Modifier.fillMaxSize())
             }
 
             is InvoiceDetailsUiState.Error -> {
                 Text(
-                    text = state.message,
+                    text = (viewModel.uiState as InvoiceDetailsUiState.Error).message,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -305,7 +309,7 @@ private fun InvoiceDetails_Success_Preview() {
         status = "Paid"
     )
     val fakeViewModel =
-        FakeInvoiceDetailsViewModel(initialState = InvoiceDetailsUiState.Success(sampleInvoice))
+        InvoiceDetailsViewModel(initialState = InvoiceDetailsUiState.Success(sampleInvoice))
     OptilensTheme { // Replace with your app's theme
         InvoiceDetailsScreen(viewModel = fakeViewModel)
     }
@@ -314,7 +318,7 @@ private fun InvoiceDetails_Success_Preview() {
 @Preview(showBackground = true)
 @Composable
 private fun InvoiceDetails_Loading_Preview() {
-    val fakeViewModel = FakeInvoiceDetailsViewModel(initialState = InvoiceDetailsUiState.Loading)
+    val fakeViewModel = InvoiceDetailsViewModel(initialState = InvoiceDetailsUiState.Loading)
     OptilensTheme {
         InvoiceDetailsScreen(viewModel = fakeViewModel)
     }
@@ -324,7 +328,7 @@ private fun InvoiceDetails_Loading_Preview() {
 @Composable
 private fun InvoiceDetails_Error_Preview() {
     val fakeViewModel =
-        FakeInvoiceDetailsViewModel(initialState = InvoiceDetailsUiState.Error("Could not load invoice."))
+        InvoiceDetailsViewModel(initialState = InvoiceDetailsUiState.Error("Could not load invoice."))
     OptilensTheme {
         InvoiceDetailsScreen(viewModel = fakeViewModel)
     }
